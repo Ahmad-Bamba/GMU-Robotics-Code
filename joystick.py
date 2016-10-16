@@ -38,6 +38,7 @@ def loop():
     global stick
     global f
     global eventstack
+    global starttime
 
     quit.register(closefile)
 
@@ -57,6 +58,8 @@ def loop():
                 eventstack.pop()
 
         for y in xrange(stick.get_numaxes() - 1):
+            if abs(stick.get_axis(y)) > 0.15:
+                print "Axis " + str(y) + ": " + str(stick.get_axis(y))
             f.write("Axis " + str(y) + ": " + str(stick.get_axis(y)) + "\n")
 
 start()
