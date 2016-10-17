@@ -49,7 +49,8 @@ def loop():
     while enabled:
         pygame.event.pump()
         for event in pygame.event.get():
-            # print event #if you want to loook at all the events...
+            #if you want to loook at all the events...
+            # print event
             if pygame.event.event_name(event.type) == "JoyButtonUp":
                 print "Button " + str(event.button) + " pressed."
             if pygame.event.event_name(event.type) == "Quit":
