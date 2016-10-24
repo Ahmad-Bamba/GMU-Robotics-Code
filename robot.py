@@ -29,21 +29,21 @@ def handle(axisarray):
         print "ERROR: Invalid Axis Input!"
         return -1
 
-    if abs(axisarray[2]) > c.THRESHOLD && abs(axisarray[0]) < c.THRESHOLD && abs(axisarray[1]) < c.THRESHOLD && abs(axisarray[5]) < c.THRESHOLD:
+    if abs(axisarray[2]) > c.THRESHOLD and abs(axisarray[0]) < c.THRESHOLD and abs(axisarray[1]) < c.THRESHOLD and abs(axisarray[5]) < c.THRESHOLD:
         top.set(-axisarray[2])
         left.set(-axisarray[2])
         bottom.set(-axisarray[2])
         right.set(-axisarray[2])
-    elif abs(axisarray[5]) > c.THRESHOLD && abs(axisarray[0]) < c.THRESHOLD && abs(axisarray[1]) < c.THRESHOLD && abs(axisarray[2]) < c.THRESHOLD:
+    elif abs(axisarray[5]) > c.THRESHOLD and abs(axisarray[0]) < c.THRESHOLD and abs(axisarray[1]) < c.THRESHOLD and abs(axisarray[2]) < c.THRESHOLD:
         top.set(-axisarray[5])
         left.set(-axisarray[5])
         bottom.set(-axisarray[5])
         right.set(-axisarray[5])
-    elif abs(axisarray[0]) > c.THRESHOLD && abs(axisarray[0]) > abs(axisarray[1]):
+    elif abs(axisarray[0]) > c.THRESHOLD and abs(axisarray[0]) > abs(axisarray[1]):
         # The user is trying to go side to side
         top.set(axisarray[0])
         bottom.set(axisarray[0])
-    elif abs(axisarray[1]) > c.THRESHOLD && abs(axisarray[1]) > abs(axisarray[0]):
+    elif abs(axisarray[1]) > c.THRESHOLD and abs(axisarray[1]) > abs(axisarray[0]):
         # The user is trying to go up and down
         left.set(axisarray[1])
         right.set(axisarray[1])
