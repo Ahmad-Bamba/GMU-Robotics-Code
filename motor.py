@@ -2,7 +2,7 @@ import Adafruit_PCA9685
 import constants as c
 
 class Motor:
-    "To make Adafruit_PCA9685"
+    "To make Adafruit_PCA9685 move"
     def __init__(self, channel):
         self.c = channel
 

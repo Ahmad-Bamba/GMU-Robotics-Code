@@ -1,3 +1,5 @@
+import Adafruit_PCA9685
+
 # VictorSP IDs (PWM)
 MOTOR_TOP    = 0
 MOTOR_RIGHT  = 1

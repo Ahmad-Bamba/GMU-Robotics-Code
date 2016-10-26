@@ -80,9 +80,13 @@ def periodic():
                         enabled = False
                         raise EmergencyStop
                     # Do button stuff here
-                elif int(event.button) == 0: # A button
-                    # control the hatch
-                elif int(event.button) == 1: # B button
-                    # grab claw
+                    elif int(event.button) == 0: # A button
+                        # control the hatch
+                        pass
+                    elif int(event.button) == 1: # B button
+                        # grab claw
+                        pass
+            stickaxis = [stick.get_axis(0), stick.get_axis(1), stick.get_axis(2), stick.get_axis(3), stick.get_axis(4), stick.get_axis(5)]
+            handle(stickaxis)
     except EmergencyStop:
         pass
