@@ -1,2 +1,2 @@
-hg+http://bitbucket.org/pygame/pygame
+pygame
 adafruit-pca9685
