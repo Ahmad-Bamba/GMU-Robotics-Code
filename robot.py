@@ -9,7 +9,7 @@ import pygame
 import sys
 import time
 
-# init hardware TODO: Get IRs set up later
+# init hardware
 cim = motor.Motor(c.MOTOR_TOP)
 
 def init():
@@ -30,7 +30,6 @@ def periodic():
                     # Do button stuff here
                     if int(event.button) == 0: # A button
                         print "A"
-                        
                         if !moving:
                             cim.set(1)
                             moving = True
