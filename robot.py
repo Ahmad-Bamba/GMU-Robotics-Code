@@ -9,6 +9,9 @@ import pygame
 import sys
 import time
 
+# set period to 20ms, which is apparently what the VictorSPs need
+c.PWM.set_pwm_frequency(50);
+
 # init hardware
 cim = motor.Motor(c.MOTOR_TOP)
 
@@ -30,7 +33,7 @@ def periodic():
                     # Do button stuff here
                     if int(event.button) == 0: # A button
                         print "A"
-                        if !moving:
+                        if not moving:
                             cim.set(1)
                             moving = True
                         else:
