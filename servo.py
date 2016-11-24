@@ -1,35 +1,19 @@
 import RPi.GPIO as GPIO
 import time
 
-pin = 17
-cycle = 0
+# Too bad python doesn't have const...
 
-GPIO.setmode(GPIO.BCM)
+pin = 17
+c = 95
+
+# Set up GPIO stuff
+
+GPIO.setmod(GPIO.BOARD)
 GPIO.setup(pin, GPIO.OUT)
-pwm = GPIO.PWM(pin, 50)
-pwm.start(cycle)
+pwm = GPIO.PWM(pin, 20)
+
+pwm.start(c)
 
 try:
-    while 1:
-        GPIO.output(pin, 0)
-	print "0"
-	time.sleep(1)
-	GPIO.output(pin, 5)
-	print "5"
-	time.sleep(1)
-	GPIO.output(pin, 10)
-	print "10"
-	time.sleep(1)
-	GPIO.output(pin, 50)
-	print "50"
-	time.sleep(1)
-	GPIO.output(pin, 75)
-	print "75"
-	time.sleep(1)
-	GPIO.output(pin, 128)
-	print "128"
-	time.sleep(1)
-except KeyboardInterrupt:
-    print "shrecking"
-    pwm.stop()
-    GPIO.cleanup()
+	while 1:
+		
