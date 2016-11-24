@@ -11,6 +11,7 @@ import time
 
 # set period to 20ms, which is apparently what the VictorSPs need
 c.PWM.set_pwm_frequency(50);
+enabled = True;
 
 # init hardware
 cim = motor.Motor(c.MOTOR_TOP)
@@ -40,4 +41,8 @@ def periodic():
                             cim.set(0)
                             moving = False
     except KeyboardInterrupt:
+        enabled = False
         sys.exit()
+
+init()
+# periodic()
