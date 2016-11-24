@@ -3,7 +3,6 @@ import constants as c
 import motor
 # import ir
 
-
 # 3rd Party
 import pygame
 import sys
