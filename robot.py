@@ -1,8 +1,8 @@
 # User defined
 import constants as c
-import pygame
 import motor
 # import ir
+
 
 # 3rd Party
 import pygame
@@ -45,4 +45,4 @@ def periodic():
         sys.exit()
 
 init()
-# periodic()
+periodic()
