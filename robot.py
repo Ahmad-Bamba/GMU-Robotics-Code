@@ -36,13 +36,16 @@ def periodic():
                     if int(event.button) == 0: # A button
                         print "A"
                         if not moving:
-                            cim.set(1)
+                            print "cim.set(1)"
+			    cim.set(1)
                             moving = True
                         else:
-                            cim.set(0)
+                            print "cim.set(0)"
+			    cim.set(0)
                             moving = False
     except KeyboardInterrupt:
         enabled = False
+	c.PWM.set_all_pwm(0, 0)
         sys.exit()
 
 init()

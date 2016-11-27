@@ -4,11 +4,11 @@ import constants as c
 # 1.0 ms = 205 ticks, 1.5 ms = 307 ticks, and 2.0 ms 410 ticks
 
 ms2 = 410
-ms15 = 307
-ms1 = 205
+ms15 = 330
+ms1 = 250
 
 class Motor:
-    "To make Adafruit_PCA9685 move"
+    "To make VictorSP connected through Adafruit_PCA9685 move"
     def __init__(self, channel):
         self.ch = channel
         c.PWM.set_pwm(self.ch, 0, ms15)
@@ -20,13 +20,22 @@ class Motor:
         # by saying what part of the signal should be off and what should be on
         # But it only works in ticks, so math must be done so that the pulses are the
         # correct widths to understand what to do
+	
+	# Tbh I'm going to guesstimate these until it works
 
-        if value > 1:
-            value = 1
-        elif value < -1:
-            value = - 1
+	x = value
 
-        percent = float((value + 1)/2) # 1 would go to 100%, -1 would go to 0%, 0 would go to 50%
-        write = ms1 + ((ms2 - ms1) * percent)
-        c.PWM.set_pwm(self.ch, 0, int(write))
+        if x > 1:
+		x = 1
+	elif x < -1:
+		x = -1
 
+	percent = float(abs(x) / 1) # Math
+	write = 80 * percent
+
+	print "Debugging: " + str(int(write))
+
+	if x == 1:
+        	c.PWM.set_pwm(self.ch, 0, int(ms15 + write))
+	else:
+		c.PWM.set_pwm(self.ch, 0, int(ms15 - write))
