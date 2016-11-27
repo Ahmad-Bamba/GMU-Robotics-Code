@@ -9,7 +9,7 @@ ms1 = 250
 
 class Motor:
     "To make VictorSP connected through Adafruit_PCA9685 move"
-    def __init__(self, channel):
+    def __init__(self, channel, debug = false):
         self.ch = channel
         c.PWM.set_pwm(self.ch, 0, ms15)
 
@@ -32,8 +32,9 @@ class Motor:
 
 	percent = float(abs(x) / 1) # Math
 	write = 80 * percent
-
-	print "Debugging: " + str(int(write))
+	
+	if debug:
+		print "Debugging: " + str(int(write))
 
 	if x == 1:
         	c.PWM.set_pwm(self.ch, 0, int(ms15 + write))

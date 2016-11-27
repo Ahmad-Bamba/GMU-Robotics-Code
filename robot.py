@@ -13,7 +13,10 @@ c.PWM.set_pwm_freq(50)
 enabled = True
 
 # init hardware
-cim = motor.Motor(c.MOTOR_TOP)
+cim_top = motor.Motor(c.MOTOR_TOP)
+cim_bot = motor.Motor(c.MOTOR_BOTTOM)
+cim_lef = motor.Motor(c.MOTOR_LEFT)
+cim_rig = motor.Motor(c.MOTOR_RIGHT)
 
 def init():
     pygame.joystick.init()
@@ -25,7 +28,7 @@ def init():
     stick.init()
 
 def periodic():
-    moving = False
+    movinga = False
     enabled = True
     try:
         while enabled:
@@ -36,13 +39,15 @@ def periodic():
                     if int(event.button) == 0: # A button
                         print "A"
                         if not moving:
-                            print "cim.set(1)"
-			    cim.set(1)
+                            print "cim.set(.2)"
+			    cim.set(.2)
                             moving = True
                         else:
                             print "cim.set(0)"
 			    cim.set(0)
                             moving = False
+		    if int(event.button) == 2:
+			if
     except KeyboardInterrupt:
         enabled = False
 	c.PWM.set_all_pwm(0, 0)
