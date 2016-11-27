@@ -8,9 +8,10 @@ import pygame
 import sys
 import time
 
-# set period to 20ms, which is apparently what the VictorSPs need
+# set period to 20ms, which is what the VictorSPs need
 c.PWM.set_pwm_freq(50)
 enabled = True
+stick = None
 
 # init hardware
 cim_top = motor.Motor(c.MOTOR_TOP)
@@ -18,9 +19,9 @@ cim_bot = motor.Motor(c.MOTOR_BOTTOM)
 cim_lef = motor.Motor(c.MOTOR_LEFT)
 cim_rig = motor.Motor(c.MOTOR_RIGHT)
 
-test = .2
-
 def init():
+	global stick
+
 	pygame.joystick.init()
 	pygame.display.init()
 	if not (pygame.joystick.get_count() > 0):
@@ -30,10 +31,7 @@ def init():
 	stick.init()
 
 def periodic():
-	movinga = False
-	movingb = False
-	movingx = False
-	movingy = False
+	global stick
 
 	enabled = True
 	try:
@@ -44,44 +42,28 @@ def periodic():
 					# Do button stuff here
 					if int(event.button) == 0: # A button
 						print "A"
-						if not movinga:
-							print "cim_top.set(.1)"
-							cim_top.set(test)
-							movinga = True
-						else:
-							print "cim_top.set(0)"
-							cim_top.set(0)
-							movinga = False
 					elif int(event.button) == 1: # B Button
 						print "B"
-						if not movingb:
-							print "cim_lef.set(.1)"
-							cim_lef.set(test)
-							movingb = True
-						else:
-							print "cim_lef.set(0)"
-							cim_lef.set(0)
-							movingb = False
-					elif int(event.button) == 2: # X Button? 
+					elif int(event.button) == 2: # X Button?
 						print "X"
-						if not movingx:
-							print "cim_rig.set(.1)"
-							cim_rig.set(test)
-							movingx = True
-						else:
-							print "cim_rig.set(0)"
-							cim_rig.set(0)
-							movingx = False
 					elif int(event.button) == 3: # Y Button?
 						print "Y"
-						if not movingy:
-							print "cim_bot.set(.1)"
-							cim_bot.set(test)
-							movingy = True
-						else:
-							print "cim_bot.set(0)"
-							cim_bot.set(0)
-							movingy = False
+
+			for i in xrange(stick.get_numaxes()):
+				if i == 1:
+					if abs(stick.get_axis(1)) > c.THRESHOLD:
+						cim_lef.set(stick.get_axis(1))
+						cim_rig.set(stick.get_axis(1))
+					else:
+						cim_lef.set(0)
+						cim_rig.set(0)
+				if i == 3:
+					if abs(stick.get_axis(3)) > c.THRESHOLD:
+						cim_top.set(stick.get_axis(3))
+						cim_bot.set(stick.get_axis(3))
+					else:
+						cim_top.set(0)
+						cim_bot.set(0)
 	except KeyboardInterrupt:
 		enabled = False
 		c.PWM.set_all_pwm(0, 0)
