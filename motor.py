@@ -9,11 +9,11 @@ ms1 = 250
 
 class Motor:
     "To make VictorSP connected through Adafruit_PCA9685 move"
-    def __init__(self, channel, debug = false):
+    def __init__(self, channel):
         self.ch = channel
         c.PWM.set_pwm(self.ch, 0, ms15)
 
-    def set(self, value):
+    def set(self, value, debug = False):
         "Converts value from -1 to 1 to a pulse. 'Correct' widths: 1ms = full reverse, 1.5ms = stop, 2.0ms = full forward"
         "Source: https://www.vexforum.com/index.php/15882-pwming-a-victor-sp/p1#p144589"
         # How controlling PWM works is that you have to set the pulse width

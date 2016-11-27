@@ -1,9 +1,9 @@
 import Adafruit_PCA9685
 
 # VictorSP IDs (PWM)
-MOTOR_TOP    = 0
-MOTOR_RIGHT  = 1
-MOTOR_BOTTOM = 2
+MOTOR_TOP    = 0 # Wheel closest to top of battery
+MOTOR_RIGHT  = 2
+MOTOR_BOTTOM = 1
 MOTOR_LEFT   = 3
 
 # IR Sensors (PWM)

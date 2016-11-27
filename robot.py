@@ -18,6 +18,8 @@ cim_bot = motor.Motor(c.MOTOR_BOTTOM)
 cim_lef = motor.Motor(c.MOTOR_LEFT)
 cim_rig = motor.Motor(c.MOTOR_RIGHT)
 
+test = .2
+
 def init():
 	pygame.joystick.init()
 	pygame.display.init()
@@ -44,37 +46,37 @@ def periodic():
 						print "A"
 						if not movinga:
 							print "cim_top.set(.1)"
-							cim_top.set(.1)
+							cim_top.set(test)
 							movinga = True
 						else:
 							print "cim_top.set(0)"
 							cim_top.set(0)
 							movinga = False
-					elif int(event.button) == 2:
+					elif int(event.button) == 1: # B Button
 						print "B"
 						if not movingb:
 							print "cim_lef.set(.1)"
-							cim_lef.set(.1)
+							cim_lef.set(test)
 							movingb = True
 						else:
 							print "cim_lef.set(0)"
 							cim_lef.set(0)
 							movingb = False
-					elif int(event.button) == 3:
+					elif int(event.button) == 2: # X Button? 
 						print "X"
 						if not movingx:
 							print "cim_rig.set(.1)"
-							cim_rig.set(.1)
+							cim_rig.set(test)
 							movingx = True
 						else:
 							print "cim_rig.set(0)"
 							cim_rig.set(0)
 							movingx = False
-					elif int(event.button) == 4:
+					elif int(event.button) == 3: # Y Button?
 						print "Y"
 						if not movingy:
 							print "cim_bot.set(.1)"
-							cim_bot.set(.1)
+							cim_bot.set(test)
 							movingy = True
 						else:
 							print "cim_bot.set(0)"
