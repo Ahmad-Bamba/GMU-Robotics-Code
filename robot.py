@@ -65,6 +65,12 @@ def periodic():
 						cim_top.set(0)
 						cim_bot.set(0)
 	except KeyboardInterrupt:
+		print "Exited by user requed"
+		enabled = False
+		c.PWM.set_all_pwm(0, 0)
+		sys.exit()
+	except Exception as e:
+		print "".format(e.errno, e.strerror)
 		enabled = False
 		c.PWM.set_all_pwm(0, 0)
 		sys.exit()
