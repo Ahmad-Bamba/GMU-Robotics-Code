@@ -9,14 +9,15 @@ import sys
 import time
 
 # set period to 20ms, which is apparently what the VictorSPs need
-c.PWM.set_pwm_frequency(50);
-enabled = True;
+c.PWM.set_pwm_freq(50)
+enabled = True
 
 # init hardware
 cim = motor.Motor(c.MOTOR_TOP)
 
 def init():
     pygame.joystick.init()
+    pygame.display.init()
     if not (pygame.joystick.get_count() > 0):
         print "No joysticks detected, quiting..."
         sys.exit()
@@ -25,6 +26,7 @@ def init():
 
 def periodic():
     moving = False
+    enabled = True
     try:
         while enabled:
             pygame.event.pump()
