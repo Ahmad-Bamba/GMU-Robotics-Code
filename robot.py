@@ -52,20 +52,20 @@ def periodic():
 			for i in xrange(stick.get_numaxes()):
 				if i == 1:
 					if abs(stick.get_axis(1)) > c.THRESHOLD:
-						cim_lef.set(stick.get_axis(1))
+						cim_lef.set(stick.get_axis(1) * -1)
 						cim_rig.set(stick.get_axis(1))
 					else:
 						cim_lef.set(0)
 						cim_rig.set(0)
 				if i == 3:
 					if abs(stick.get_axis(3)) > c.THRESHOLD:
-						cim_top.set(stick.get_axis(3))
+						cim_top.set(stick.get_axis(3) * -1)
 						cim_bot.set(stick.get_axis(3))
 					else:
 						cim_top.set(0)
 						cim_bot.set(0)
 	except KeyboardInterrupt:
-		print "Exited by user requed"
+		print "Exited by user request"
 		enabled = False
 		c.PWM.set_all_pwm(0, 0)
 		sys.exit()
