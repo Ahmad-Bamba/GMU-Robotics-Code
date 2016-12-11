@@ -14,10 +14,10 @@ enabled = True
 stick = None
 
 # init hardware
-cim_top = motor.Motor(c.MOTOR_TOP)
-cim_bot = motor.Motor(c.MOTOR_BOTTOM)
-cim_lef = motor.Motor(c.MOTOR_LEFT)
-cim_rig = motor.Motor(c.MOTOR_RIGHT)
+cim_top = motor.Victor(c.MOTOR_TOP)
+cim_bot = motor.Victor(c.MOTOR_BOTTOM)
+cim_lef = motor.Victor(c.MOTOR_LEFT)
+cim_rig = motor.Victor(c.MOTOR_RIGHT)
 
 def init():
 	global stick
