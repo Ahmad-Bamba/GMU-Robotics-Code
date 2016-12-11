@@ -37,3 +37,7 @@ LOW_POWER  = FULL_POWER / 5
 # QUARTER_POWER = FULL_POWER /4
 PWM = Adafruit_PCA9685.PCA9685() # One pwm handler for the entire robot (pls no break)
 THRESHOLD = 0.2
+
+# Kill switch Exception
+class KillSwitch(Exception):
+    pass
