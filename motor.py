@@ -32,12 +32,12 @@ class Victor:
 
 	if not inverse:
 		if x > 0:
-				c.PWM.set_pwm(self.channel, 0, int(ms15 + write))
+			c.PWM.set_pwm(self.channel, 0, int(ms15 + write))
 		else:
 			c.PWM.set_pwm(self.channel, 0, int(ms15 - write))
 	else:
 		if x > 0:
-				c.PWM.set_pwm(self.channel, 0, int(ms15 - write))
+			c.PWM.set_pwm(self.channel, 0, int(ms15 - write))
 		else:
 			c.PWM.set_pwm(self.channel, 0, int(ms15 + write))
 

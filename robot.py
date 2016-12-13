@@ -1,5 +1,7 @@
 # User defined
 import constants as c
+import networking as net
+import RobotExceptions as rexept
 import motor
 # import ir
 
@@ -19,34 +21,12 @@ stick = None
 
 # Networking
 robosock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-robosock.bind(socket.gethostname(), 9685)
-robosock.listen(5)
 
 # init hardware
 cim_top = motor.Victor(c.MOTOR_TOP)
 cim_bot = motor.Victor(c.MOTOR_BOTTOM)
 cim_lef = motor.Victor(c.MOTOR_LEFT)
 cim_rig = motor.Victor(c.MOTOR_RIGHT)
-
-
-def sendToDashboard(sock, msg):
-    totalsent = 0
-    while totalsent < len(msg):
-        sent = sock.send(msg[totalsent:])
-        if sent == 0:
-            raise RuntimeError("Socket connection broken!")
-        totalsent = totalsent + sent
-
-def recieveFromDashboard(sock, msg):
-    chunks = []
-    bytes_recd = 0
-    while bytes_recd < len(msg):
-        chunk = sock.recv(min(len(msg) - bytes_recd, 2048))
-        if chunk == '':
-            raise RuntimeError("Socket connection broken!")
-        chunks.append(chunk)
-        bytes_recd = bytes_recd + len(chunk)
-    return ''.join(chunks)
 
 def init():
 	global stick
@@ -59,6 +39,16 @@ def init():
 	stick = pygame.joystick.Joystick(c.JOYSTICK)
 	stick.init()
 
+	while True:
+		time.sleep(1)
+		try:
+			robosock.connect((c.LAPTOP_IP, 9685))
+			break
+		except Exception as e:
+			print e
+			print "Connection failed, check to make sure static ip set up correctly"
+			print "Retrying..."
+
 def periodic():
 	global stick
 	global enabled
@@ -66,11 +56,15 @@ def periodic():
 
 	try:
 		while True:
-			(cli, address) = robosock.accept()
-			print "Recieved connection from " + str(address)
-			dashupdate = [ ["RobotState", str(enabled)],  ["Axis0", str(random.uniform(-1, 1))], ["Axis4", str(random.uniform(-1, 1))], ["Axis2", str(random.uniform(-1, 1))], ["Axis3", str(random.uniform(-1, 1))] ]
-			print str(dashupdate)
-			# sendToDashboard(str(dashupdate))
+			message = net.recieveFromDashboard(robosock, c.MSG_STANDARD)
+			if message[:2] == "+U":
+				# print message[2]
+				enabled = bool(int(message[2]))
+				if message[3] == ":":
+					print "Message from socket: " + message[4:24]
+
+			dashupdate = "-U" + str(int(enabled)) + ":" + ("%.3f" % round(random.uniform(-1, 1), 3)) + ":" + ("%.3f" % round(random.uniform(-1, 1), 3)) + ":" + ("%.3f" % round(random.uniform(-1, 1), 3)) + ":" + ("%.3f" % round(random.uniform(-1, 1), 3)) + "$"
+			net.sendToDashboard(robosock, dashupdate)
 
 			if enabled:
 				pygame.event.pump()
@@ -103,6 +97,11 @@ def periodic():
 							cim_bot.set(0)
 	except KeyboardInterrupt:
 		print "Exited by user request"
+		enabled = False
+		c.PWM.set_all_pwm(0, 0)
+		sys.exit()
+	except rexept.KillSwitch:
+		print "KillSwitch activated!"
 		enabled = False
 		c.PWM.set_all_pwm(0, 0)
 		sys.exit()
