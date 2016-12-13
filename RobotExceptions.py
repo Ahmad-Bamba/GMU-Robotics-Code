@@ -1,5 +1,5 @@
 class KillSwitch(Exception):
-    pass
+	pass
 
 class SocketClose(Exception):
-    pass
+	pass

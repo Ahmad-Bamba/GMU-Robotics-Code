@@ -10,20 +10,20 @@
 import RobotExceptions as rexept
 
 def sendToDashboard(sock, msg):
-    totalsent = 0
-    while totalsent < len(msg):
-        sent = sock.send(msg[totalsent:])
-        if sent == 0:
-            raise rexept.SocketClose()
-        totalsent = totalsent + sent
+	totalsent = 0
+	while totalsent < len(msg):
+		sent = sock.send(msg[totalsent:])
+		if sent == 0:
+			raise rexept.SocketClose()
+		totalsent = totalsent + sent
 
 def recieveFromDashboard(sock, length):
-    chunks = []
-    bytes_recd = 0
-    while bytes_recd < length:
-        chunk = sock.recv(min(length - bytes_recd, 2048))
-        if chunk == '':
-            raise rexept.SocketClose()
-        chunks.append(chunk)
-        bytes_recd = bytes_recd + len(chunk)
-    return ''.join(chunks)
+	chunks = []
+	bytes_recd = 0
+	while bytes_recd < length:
+		chunk = sock.recv(min(length - bytes_recd, 2048))
+		if chunk == '':
+			raise rexept.SocketClose()
+		chunks.append(chunk)
+		bytes_recd = bytes_recd + len(chunk)
+	return ''.join(chunks)
