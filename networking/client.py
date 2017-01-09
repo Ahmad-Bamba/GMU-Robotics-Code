@@ -26,3 +26,6 @@ class Client:
                 message += x
 
         return message
+
+    def end(self):
+        self.s.close()

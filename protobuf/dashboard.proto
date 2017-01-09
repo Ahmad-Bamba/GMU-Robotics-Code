@@ -1,1 +1,22 @@
-//TODO
+syntax = "proto3";
+
+package GmuRoboticsCode;
+
+message RobotStaus {
+    bool robot_state = 1;
+
+    message axes{
+        double joy1 = 1;
+        double joy2 = 2;
+        double joy3 = 3;
+        double joy4 = 4;
+        double joy5 = 5;
+    }
+
+    message button {
+        bool butA = 1;
+        bool butB = 2;
+        bool butX = 3;
+        bool butY = 4;
+    }
+}

@@ -33,4 +33,7 @@ class Server:
             else:
                 message += x
 
-        return message
+        return message'
+
+    def end(self):
+        self.s.close()
