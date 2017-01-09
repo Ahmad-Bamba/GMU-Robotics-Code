@@ -25,58 +25,64 @@ def dashboard_update_send():
 	global stick
 	global enabled
 
-	update = dashboard_pb2.RobotStaus()
-	update.robot_state = enabled
-	axes_list = update.axes.add()
+	try:
+		update = dashboard_pb2.RobotStaus()
+		update.robot_state = enabled
+		axes_list = update.axes.add()
 
-	axes_list.joy1 = stick.get_axis(1)
-	axes_list.joy2 = stick.get_axis(2)
-	axes_list.joy3 = stick.get_axis(3)
-	axes_list.joy4 = stick.get_axis(4)
-	axes_list.joy5 = stick.get_axis(5)
+		axes_list.joy1 = stick.get_axis(1)
+		axes_list.joy2 = stick.get_axis(2)
+		axes_list.joy3 = stick.get_axis(3)
+		axes_list.joy4 = stick.get_axis(4)
+		axes_list.joy5 = stick.get_axis(5)
 
-	button_list = update.button_list.add()
-	buttons = [False, False, False, False]
+		button_list = update.button_list.add()
+		buttons = [False, False, False, False]
 
-	pygame.event.pump()
-	for event in pygame.event.get():
-		if pygame.event.event_name(event.type) == "JoyButtonUp":
-			# Do button stuff here
-			if int(event.button) == 0: # A button
-				buttons[0] = True
-			elif int(event.button) == 1: # B Button
-				buttons[1] = True
-			elif int(event.button) == 2: # X Button?
-				buttons[2] = True
-			elif int(event.button) == 3: # Y Button?
-				buttons[3] = True
+		pygame.event.pump()
+		for event in pygame.event.get():
+			if pygame.event.event_name(event.type) == "JoyButtonUp":
+				# Do button stuff here
+				if int(event.button) == 0: # A button
+					buttons[0] = True
+				elif int(event.button) == 1: # B Button
+					buttons[1] = True
+				elif int(event.button) == 2: # X Button?
+					buttons[2] = True
+				elif int(event.button) == 3: # Y Button?
+					buttons[3] = True
 
-	button_list.butA = buttons[0]
-	button_list.butB = buttons[1]
-	button_list.butX = buttons[2]
-	button_list.butY = buttons[3]
+		button_list.butA = buttons[0]
+		button_list.butB = buttons[1]
+		button_list.butX = buttons[2]
+		button_list.butY = buttons[3]
 
-	cli = cl.Client("10.23.34.3")
-	cli.send(update.SerializeToString() + chr(182))
+		cli = cl.Client("10.23.34.3")
+		cli.send(update.SerializeToString() + chr(182))
 
-	# cleanup
-	cli.end()
-	del cli
-	del update
+		# cleanup
+		cli.end()
+		del cli
+		del update
+	except:
+		print "Failed to update dashboard"
 
 def dashboard_update_receive():
 	global enabled
 
-	cli = cl.Client("10.23.34.3")
-	update_str = cli.receive(chr(182))
-	update = dashboard_pb2.RobotStaus()
-	update.ParseFromString(update_str)
+	try:
+		cli = cl.Client("10.23.34.3")
+		update_str = cli.receive(chr(182))
+		update = dashboard_pb2.RobotStaus()
+		update.ParseFromString(update_str)
 
-	enabled = update.robot_state
+		enabled = update.robot_state
 
-	# cleanup
-	del update_str
-	del update
+		# cleanup
+		del update_str
+		del update
+	except:
+		print "Failed to receive dashboard update"
 
 def init():
 	global stick
@@ -95,6 +101,7 @@ def periodic():
 	enabled = True
 	try:
 		while enabled:
+			dashboard_update_receive()
 			pygame.event.pump()
 			for event in pygame.event.get():
 				if pygame.event.event_name(event.type) == "JoyButtonUp":
@@ -111,18 +118,19 @@ def periodic():
 			for i in xrange(stick.get_numaxes()):
 				if i == 1:
 					if abs(stick.get_axis(1)) > c.THRESHOLD:
-						cim_lef.set(stick.get_axis(1) * -1)
+						cim_lef.set(stick.get_axis(1), True)
 						cim_rig.set(stick.get_axis(1))
 					else:
 						cim_lef.set(0)
 						cim_rig.set(0)
 				if i == 3:
 					if abs(stick.get_axis(3)) > c.THRESHOLD:
-						cim_top.set(stick.get_axis(3) * -1)
+						cim_top.set(stick.get_axis(3), True)
 						cim_bot.set(stick.get_axis(3))
 					else:
 						cim_top.set(0)
 						cim_bot.set(0)
+			dashboard_update_send()
 	except KeyboardInterrupt:
 		print "Exited by user request"
 		enabled = False
