@@ -37,6 +37,10 @@ def init():
     stick.init()
 
 def periodic():
+    global motor_one
+    global motor_two
+    global stick
+
     enabled = True
     while enabled:
         try:
