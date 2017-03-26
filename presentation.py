@@ -17,6 +17,8 @@ motor_two = None
 def init():
     global motor_one
     global motor_two
+    global stick
+    global stick_port
 
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(motor_one_pin, GPIO.OUT)
@@ -31,7 +33,7 @@ def init():
     if not (pygame.joystick.get_count() > 0):
         print "No joysticks detected, quiting..."
         sys.exit()
-    stick = pygame.joystick.Joystick(c.JOYSTICK)
+    stick = pygame.joystick.Joystick(stick_port)
     stick.init()
 
 def periodic():
