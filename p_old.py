@@ -2,17 +2,17 @@ import RPi.GPIO as GPIO
 import pygame
 import sys
 
-frequency = 50
+frequency = 100
 motor_top_pin = 14
 motor_bot_pin = 17
-motor_lef_pin = 15
-motor_rig_pin = 18
+motor_lef_pin = 27
+motor_rig_pin = 22
 right_stick_y = 5
 safe_sleep = 0.05
 stick_port = 0
-threshold = 0.01
-# pwm_min = 250
-# pwm_max = 410
+threshold = 0.1
+pwm_mid = 14.3
+pwm_var = 7.2
 stick = None
 motor_top = None
 motor_bot = None
@@ -25,7 +25,15 @@ def joystick_floor(x):
 
 
 def joystick_limit(x):
-    return x if abs(x) < 50 else 50 if x > 0 else -50
+    return x if abs(x) < 1 else 1 if x > 0 else -1
+
+
+def joy_to_raw(x):
+    global pwm_mid
+    global pwm_var
+
+    return pwm_mid + (-x * pwm_var)
+
 
 def init():
     global motor_top
@@ -74,8 +82,10 @@ def periodic():
     global stick
 
     enabled = True
+    i = 0
     while enabled:
         try:
+            i += 1
             pygame.event.pump()
             for event in pygame.event.get():
                 if pygame.event.event_name(event.type) == "JoyButtonUp":
@@ -88,14 +98,20 @@ def periodic():
                         print "X"
                     elif int(event.button) == 3:  # Y Button?
                         print "Y"
-            hori = joystick_floor(stick.get_axis(0))
+            hori = joystick_floor(stick.get_axis(3))
+            if i % 250 == 0:
+                print "Hori: " + str(hori)
             vert = joystick_floor(stick.get_axis(1))
-            rota = joystick_floor(stick.get_axis(3) - stick.get_axis(2))
+            if i % 250 == 0:
+                print "Vert: " + str(vert)
+            rota = joystick_floor(stick.get_axis(5))
+            if i % 250 == 0:
+                print "Rota: " + str(rota)
 
-            motor_top.ChangeDutyCycle(50 + joystick_limit(50 * (hori + rota)))
-            motor_bot.ChangeDutyCycle(50 - joystick_limit(50 * (hori - rota)))
-            motor_lef.ChangeDutyCycle(50 + joystick_limit(50 * (vert + rota)))
-            motor_rig.ChangeDurtCycle(50 - joystick_limit(50 * (vert - rota)))
+            motor_top.ChangeDutyCycle(joy_to_raw(joystick_limit(hori)))
+            motor_bot.ChangeDutyCycle(joy_to_raw(-joystick_limit(hori)))
+            motor_lef.ChangeDutyCycle(joy_to_raw(joystick_limit(vert)))
+            motor_rig.ChangeDutyCycle(joy_to_raw(-joystick_limit(vert)))
         except KeyboardInterrupt:
             print "Keyboard Interrupt!"
             motor_rig.stop()
